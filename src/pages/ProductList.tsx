@@ -4,6 +4,7 @@ import { useProductStore } from '../features/ingredients/productStore';
 import type { Product } from '../features/ingredients/productStore';
 import { UNITS } from '../constants/units';
 import { useTranslation } from '../i18n';
+import './ProductList.css';
 
 export const ProductList: React.FC = () => {
     const { products, addProduct, updateProduct, removeProduct } = useProductStore();
@@ -39,32 +40,15 @@ export const ProductList: React.FC = () => {
     };
 
     return (
-        <div>
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: 'var(--space-6)'
-            }}>
-                <h2 style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-weight-bold)' }}>
+        <div className="product-list">
+            <div className="product-list__header">
+                <h2 className="product-list__title">
                     {t.products.title}
                 </h2>
                 <button
                     onClick={handleAddNew}
                     disabled={isEditing !== null}
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 'var(--space-2)',
-                        padding: 'var(--space-2) var(--space-4)',
-                        backgroundColor: 'var(--primary)',
-                        color: 'white',
-                        borderRadius: 'var(--radius-md)',
-                        border: 'none',
-                        cursor: isEditing ? 'not-allowed' : 'pointer',
-                        opacity: isEditing ? 0.5 : 1,
-                        fontWeight: 'var(--font-weight-medium)'
-                    }}
+                    className="product-list__add-btn"
                 >
                     <Plus size={20} />
                     <span>{t.products.add}</span>
@@ -73,86 +57,57 @@ export const ProductList: React.FC = () => {
 
             {/* Formulaire d'ajout/édition */}
             {isEditing && (
-                <div style={{
-                    backgroundColor: 'var(--bg-card)',
-                    padding: 'var(--space-4)',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--border-color)',
-                    marginBottom: 'var(--space-4)',
-                    display: 'flex',
-                    gap: 'var(--space-2)',
-                    alignItems: 'center'
-                }}>
+                <div className="product-list__form">
                     <input
                         type="text"
                         value={editForm.name}
                         onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                         placeholder={t.products.form.namePlaceholder}
                         autoFocus
-                        style={{ flex: 2, padding: 'var(--space-2)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
+                        className="product-list__input"
                     />
                     <select
                         value={editForm.defaultUnit}
                         onChange={(e) => setEditForm({ ...editForm, defaultUnit: e.target.value })}
-                        style={{ flex: 1, padding: 'var(--space-2)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
+                        className="product-list__select"
                     >
                         {UNITS.map(u => (
                             <option key={u.value} value={u.value}>{u.label}</option>
                         ))}
                     </select>
-                    <button onClick={handleSave} style={{ color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                    <button onClick={handleSave} className="product-list__action-btn product-list__save-btn">
                         <Save size={20} />
                     </button>
-                    <button onClick={handleCancel} style={{ color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                    <button onClick={handleCancel} className="product-list__action-btn product-list__cancel-btn">
                         <X size={20} />
                     </button>
                 </div>
             )}
 
             {/* Liste */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+            <div className="product-list__items">
                 {products.length === 0 && !isEditing && (
-                    <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 'var(--space-8)' }}>
+                    <p className="product-list__empty">
                         {t.products.empty}
                     </p>
                 )}
                 {products.map((product) => (
-                    <div key={product.id} style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        padding: 'var(--space-3)',
-                        backgroundColor: 'var(--bg-card)',
-                        borderRadius: 'var(--radius-md)',
-                        border: '1px solid var(--border-color)'
-                    }}>
-                        <span style={{ flex: 1, fontWeight: 'var(--font-weight-medium)' }}>{product.name}</span>
-                        <span style={{ color: 'var(--text-muted)', fontSize: 'var(--text-sm)', marginRight: 'var(--space-4)' }}>
+                    <div key={product.id} className="product-item">
+                        <span className="product-item__name">{product.name}</span>
+                        <span className="product-item__unit">
                             {UNITS.find(u => u.value === product.defaultUnit)?.label || product.defaultUnit}
                         </span>
                         <button
                             onClick={() => handleEdit(product)}
                             disabled={isEditing !== null}
-                            style={{
-                                color: 'var(--primary)',
-                                background: 'none',
-                                border: 'none',
-                                cursor: isEditing ? 'not-allowed' : 'pointer',
-                                marginRight: 'var(--space-2)',
-                                opacity: isEditing ? 0.3 : 1
-                            }}
+                            className="product-list__action-btn product-item__edit-btn"
                         >
                             <Edit2 size={18} />
                         </button>
                         <button
                             onClick={() => { if (confirm(t.common.confirm + ' ?')) removeProduct(product.id); }}
                             disabled={isEditing !== null}
-                            style={{
-                                color: 'var(--color-danger-500)',
-                                background: 'none',
-                                border: 'none',
-                                cursor: isEditing ? 'not-allowed' : 'pointer',
-                                opacity: isEditing ? 0.3 : 1
-                            }}
+                            className="product-list__action-btn product-item__delete-btn"
                         >
                             <Trash2 size={18} />
                         </button>

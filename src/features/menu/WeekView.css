@@ -1,0 +1,207 @@
+.week-view {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+.week-view__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-6);
+}
+
+.week-view__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.week-view__nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-1);
+    border-radius: var(--radius-sm);
+    color: var(--text-main);
+    transition: background-color 0.2s;
+}
+
+.week-view__nav-btn:hover {
+    background-color: var(--bg-main);
+}
+
+.week-view__title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+}
+
+.week-view__generate-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-4);
+    cursor: pointer;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--text-sm);
+    transition: background-color 0.2s;
+}
+
+.week-view__generate-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.week-view__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-4);
+}
+
+.week-view__day-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+.week-view__day-title {
+    text-transform: capitalize;
+    margin-bottom: var(--space-4);
+    font-weight: var(--font-weight-medium);
+    color: var(--primary);
+    margin-top: 0;
+}
+
+.week-view__slots {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+/* MealSlot Sub-component styles */
+.meal-slot {
+    background-color: var(--color-slate-50);
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--color-slate-300);
+}
+
+.meal-slot__label {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    margin-bottom: var(--space-1);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.meal-slot__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meal-slot__text {
+    font-weight: var(--font-weight-medium);
+}
+
+.meal-slot__remove-btn {
+    color: var(--color-danger-500);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-1);
+    display: flex;
+    align-items: center;
+}
+
+.meal-slot__add-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--text-sm);
+    padding: 0;
+}
+
+/* Modal Content Styles */
+.week-view__modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.week-view__search-container {
+    position: relative;
+}
+
+.week-view__search-icon {
+    position: absolute;
+    left: var(--space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.week-view__search-input {
+    width: 100%;
+    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-10);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    font-size: var(--text-base);
+}
+
+.week-view__recipe-list {
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.week-view__recipe-item {
+    text-align: left;
+    padding: var(--space-3);
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.week-view__recipe-item:hover {
+    background-color: var(--bg-card);
+}
+
+.week-view__recipe-title {
+    font-weight: var(--font-weight-medium);
+}
+
+.week-view__recipe-meta {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+}
+
+.week-view__manual-add-btn {
+    text-align: left;
+    padding: var(--space-3);
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    border: 1px dashed var(--primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.week-view__empty-state {
+    text-align: center;
+    color: var(--text-muted);
+    padding: var(--space-4);
+}

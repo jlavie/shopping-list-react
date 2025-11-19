@@ -6,6 +6,7 @@ import { useProductStore } from '../features/ingredients/productStore';
 import { UNITS } from '../constants/units';
 import { useTranslation } from '../i18n';
 import type { Recipe, Ingredient } from '../types';
+import './RecipeDetail.css';
 
 export const RecipeDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -100,76 +101,83 @@ export const RecipeDetail: React.FC = () => {
     };
 
     return (
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-6)' }}>
-                <button onClick={() => navigate('/recipes')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 'var(--space-2)', color: 'var(--text-muted)' }}>
+        <div className="recipe-detail">
+            <div className="recipe-detail__header">
+                <button onClick={() => navigate('/recipes')} className="recipe-detail__back-btn">
                     <ArrowLeft size={20} />
                     <span>{t.common.cancel}</span>
                 </button>
-                <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+                <div className="recipe-detail__actions">
                     {!isNew && (
-                        <button onClick={handleDelete} style={{ color: 'var(--color-danger-500)', background: 'none', border: 'none', cursor: 'pointer', padding: 'var(--space-2)' }}>
+                        <button
+                            onClick={handleDelete}
+                            className="recipe-detail__action-btn recipe-detail__action-btn--danger"
+                        >
                             <Trash2 size={20} />
                         </button>
                     )}
-                    <button onClick={handleSave} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', backgroundColor: 'var(--primary)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', padding: 'var(--space-2) var(--space-4)', cursor: 'pointer' }}>
+                    <button
+                        onClick={handleSave}
+                        className="recipe-detail__action-btn recipe-detail__action-btn--primary"
+                    >
                         <Save size={20} />
                         <span>{t.common.save}</span>
                     </button>
                 </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+            <div className="recipe-detail__form">
                 {/* Informations de base */}
-                <div style={{ backgroundColor: 'var(--bg-card)', padding: 'var(--space-6)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                    <div style={{ marginBottom: 'var(--space-4)' }}>
-                        <label style={{ display: 'block', marginBottom: 'var(--space-2)', fontWeight: 'var(--font-weight-medium)' }}>{t.recipes.form.titlePlaceholder}</label>
+                <div className="recipe-detail__section">
+                    <div className="recipe-detail__form-group">
+                        <label style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>{t.recipes.form.titlePlaceholder}</label>
                         <input
                             type="text"
                             value={recipe.title}
                             onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
-                            style={{ width: '100%', padding: 'var(--space-3)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', fontSize: 'var(--text-lg)' }}
+                            className="recipe-detail__input recipe-detail__input--large"
                             placeholder={t.recipes.form.titlePlaceholder}
                         />
                     </div>
-                    <div style={{ display: 'flex', gap: 'var(--space-4)' }}>
-                        <div style={{ flex: 1 }}>
-                            <label style={{ display: 'block', marginBottom: 'var(--space-2)', fontWeight: 'var(--font-weight-medium)' }}>{t.recipes.form.prepTime}</label>
+                    <div className="recipe-detail__row">
+                        <div className="recipe-detail__form-group" style={{ flex: 1 }}>
+                            <label style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>{t.recipes.form.prepTime}</label>
                             <input
                                 type="number"
                                 value={recipe.prepTime}
                                 onChange={(e) => setRecipe({ ...recipe, prepTime: parseInt(e.target.value) || 0 })}
-                                style={{ width: '100%', padding: 'var(--space-3)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}
+                                className="recipe-detail__input"
                             />
                         </div>
-                        <div style={{ flex: 1 }}>
-                            <label style={{ display: 'block', marginBottom: 'var(--space-2)', fontWeight: 'var(--font-weight-medium)' }}>{t.recipes.form.servings}</label>
+                        <div className="recipe-detail__form-group" style={{ flex: 1 }}>
+                            <label style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>{t.recipes.form.servings}</label>
                             <input
                                 type="number"
                                 value={recipe.servings}
                                 onChange={(e) => setRecipe({ ...recipe, servings: parseInt(e.target.value) || 1 })}
-                                style={{ width: '100%', padding: 'var(--space-3)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}
+                                className="recipe-detail__input"
                             />
                         </div>
                     </div>
                 </div>
 
                 {/* Ingrédients */}
-                <div style={{ backgroundColor: 'var(--bg-card)', padding: 'var(--space-6)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
-                        <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)' }}>{t.recipes.ingredients}</h3>
-                        <button onClick={addIngredient} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                <div className="recipe-detail__section">
+                    <div className="recipe-detail__section-header">
+                        <h3 className="recipe-detail__section-title">{t.recipes.ingredients}</h3>
+                        <button onClick={addIngredient} className="recipe-detail__add-btn">
                             <Plus size={16} /> {t.recipes.form.addIngredient}
                         </button>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                    <div className="recipe-detail__list">
                         {recipe.ingredients?.map((ing, index) => (
-                            <div key={ing.id} style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+                            <div key={ing.id} className="recipe-detail__list-item">
                                 {/* Sélection du produit */}
                                 <select
                                     value={ing.name}
                                     onChange={(e) => handleIngredientChange(index, 'name', e.target.value)}
-                                    style={{ flex: 2, padding: 'var(--space-2)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
+                                    className="recipe-detail__select"
+                                    style={{ flex: 2 }}
                                 >
                                     <option value="">Sélectionner un ingrédient...</option>
                                     {products.map(p => (
@@ -185,21 +193,23 @@ export const RecipeDetail: React.FC = () => {
                                     type="number"
                                     value={ing.quantity}
                                     onChange={(e) => handleIngredientChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                                    style={{ width: '80px', padding: 'var(--space-2)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
+                                    className="recipe-detail__input"
+                                    style={{ width: '80px' }}
                                 />
 
                                 {/* Sélection de l'unité */}
                                 <select
                                     value={ing.unit}
                                     onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
-                                    style={{ width: '120px', padding: 'var(--space-2)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
+                                    className="recipe-detail__select"
+                                    style={{ width: '120px' }}
                                 >
                                     {UNITS.map(u => (
                                         <option key={u.value} value={u.value}>{u.label}</option>
                                     ))}
                                 </select>
 
-                                <button onClick={() => removeIngredient(index)} style={{ color: 'var(--color-danger-500)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                                <button onClick={() => removeIngredient(index)} className="recipe-detail__remove-btn">
                                     <Minus size={16} />
                                 </button>
                             </div>
@@ -213,24 +223,25 @@ export const RecipeDetail: React.FC = () => {
                 </div>
 
                 {/* Étapes */}
-                <div style={{ backgroundColor: 'var(--bg-card)', padding: 'var(--space-6)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
-                        <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-weight-bold)' }}>{t.recipes.steps}</h3>
-                        <button onClick={addStep} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)', color: 'var(--primary)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                <div className="recipe-detail__section">
+                    <div className="recipe-detail__section-header">
+                        <h3 className="recipe-detail__section-title">{t.recipes.steps}</h3>
+                        <button onClick={addStep} className="recipe-detail__add-btn">
                             <Plus size={16} /> {t.recipes.form.addStep}
                         </button>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                    <div className="recipe-detail__list">
                         {recipe.steps?.map((step, index) => (
-                            <div key={index} style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'start' }}>
-                                <span style={{ padding: 'var(--space-2)', color: 'var(--text-muted)', fontWeight: 'bold' }}>{index + 1}.</span>
+                            <div key={index} className="recipe-detail__list-item" style={{ alignItems: 'flex-start' }}>
+                                <span className="recipe-detail__step-number">{index + 1}.</span>
                                 <textarea
                                     value={step}
                                     onChange={(e) => handleStepChange(index, e.target.value)}
                                     placeholder={t.recipes.form.stepPlaceholder}
-                                    style={{ flex: 1, padding: 'var(--space-2)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', minHeight: '60px', resize: 'vertical' }}
+                                    className="recipe-detail__input"
+                                    style={{ flex: 1, minHeight: '60px', resize: 'vertical' }}
                                 />
-                                <button onClick={() => removeStep(index)} style={{ color: 'var(--color-danger-500)', background: 'none', border: 'none', cursor: 'pointer', marginTop: 'var(--space-2)' }}>
+                                <button onClick={() => removeStep(index)} className="recipe-detail__remove-btn">
                                     <Minus size={16} />
                                 </button>
                             </div>

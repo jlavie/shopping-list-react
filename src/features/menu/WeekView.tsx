@@ -6,6 +6,7 @@ import { getStartOfWeek, getWeekDays, formatDate, formatDayName } from '../../ut
 import type { MealType } from '../../types';
 import { useTranslation } from '../../i18n';
 import { Modal } from '../../components/Modal';
+import './WeekView.css';
 
 export const WeekView: React.FC = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -45,7 +46,7 @@ export const WeekView: React.FC = () => {
                 date: selectedSlot.date,
                 mealType: selectedSlot.type,
                 recipeId: recipeId,
-                customLabel: recipeName // On garde le nom pour l'affichage rapide
+                customLabel: recipeName
             });
             setIsModalOpen(false);
         }
@@ -81,69 +82,40 @@ export const WeekView: React.FC = () => {
     );
 
     return (
-        <div>
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: 'var(--space-6)'
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
-                    <button onClick={handlePrevWeek} title={t.planner.prevWeek} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+        <div className="week-view">
+            <div className="week-view__header">
+                <div className="week-view__controls">
+                    <button onClick={handlePrevWeek} title={t.planner.prevWeek} className="week-view__nav-btn">
                         <ChevronLeft size={24} />
                     </button>
-                    <h2 style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-weight-bold)' }}>
+                    <h2 className="week-view__title">
                         {t.planner.weekOf} {startOfWeek.toLocaleDateString()}
                     </h2>
-                    <button onClick={handleNextWeek} title={t.planner.nextWeek} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                    <button onClick={handleNextWeek} title={t.planner.nextWeek} className="week-view__nav-btn">
                         <ChevronRight size={24} />
                     </button>
                 </div>
 
                 <button
                     onClick={handleGenerateShoppingList}
-                    style={{
-                        backgroundColor: 'var(--primary)',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: 'var(--radius-md)',
-                        padding: 'var(--space-2) var(--space-4)',
-                        cursor: 'pointer',
-                        fontWeight: 'var(--font-weight-medium)',
-                        fontSize: 'var(--text-sm)'
-                    }}
+                    className="week-view__generate-btn"
                 >
                     {t.planner.actions.generateShoppingList}
                 </button>
             </div>
 
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: 'var(--space-4)'
-            }}>
+            <div className="week-view__grid">
                 {weekDays.map((day) => {
                     const dateStr = formatDate(day);
                     const dayEntries = entries.filter(e => e.date === dateStr);
 
                     return (
-                        <div key={dateStr} style={{
-                            backgroundColor: 'var(--bg-card)',
-                            borderRadius: 'var(--radius-md)',
-                            padding: 'var(--space-4)',
-                            boxShadow: 'var(--shadow-sm)',
-                            border: '1px solid var(--border-color)'
-                        }}>
-                            <h3 style={{
-                                textTransform: 'capitalize',
-                                marginBottom: 'var(--space-4)',
-                                fontWeight: 'var(--font-weight-medium)',
-                                color: 'var(--primary)'
-                            }}>
+                        <div key={dateStr} className="week-view__day-card">
+                            <h3 className="week-view__day-title">
                                 {formatDayName(day)}
                             </h3>
 
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                            <div className="week-view__slots">
                                 {/* Midi */}
                                 <MealSlot
                                     label={t.planner.meals.lunch}
@@ -174,44 +146,30 @@ export const WeekView: React.FC = () => {
                 onClose={() => setIsModalOpen(false)}
                 title={t.planner.actions.addMealPrompt}
             >
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-                    <div style={{ position: 'relative' }}>
-                        <Search size={20} style={{ position: 'absolute', left: 'var(--space-3)', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                <div className="week-view__modal-content">
+                    <div className="week-view__search-container">
+                        <Search size={20} className="week-view__search-icon" />
                         <input
                             type="text"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Rechercher une recette ou saisir un plat..."
                             autoFocus
-                            style={{
-                                width: '100%',
-                                padding: 'var(--space-3) var(--space-3) var(--space-3) var(--space-10)',
-                                borderRadius: 'var(--radius-md)',
-                                border: '1px solid var(--border-color)',
-                                fontSize: 'var(--text-base)'
-                            }}
+                            className="week-view__search-input"
                         />
                     </div>
 
                     {/* Liste des recettes filtrées */}
-                    <div style={{ maxHeight: '300px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                    <div className="week-view__recipe-list">
                         {filteredRecipes.length > 0 ? (
                             filteredRecipes.map(recipe => (
                                 <button
                                     key={recipe.id}
                                     onClick={() => handleSelectRecipe(recipe.id, recipe.title)}
-                                    style={{
-                                        textAlign: 'left',
-                                        padding: 'var(--space-3)',
-                                        backgroundColor: 'var(--bg-main)',
-                                        border: '1px solid var(--border-color)',
-                                        borderRadius: 'var(--radius-sm)',
-                                        cursor: 'pointer',
-                                        transition: 'background-color 0.2s'
-                                    }}
+                                    className="week-view__recipe-item"
                                 >
-                                    <div style={{ fontWeight: 'var(--font-weight-medium)' }}>{recipe.title}</div>
-                                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
+                                    <div className="week-view__recipe-title">{recipe.title}</div>
+                                    <div className="week-view__recipe-meta">
                                         {recipe.prepTime} min • {recipe.ingredients.length} ingrédients
                                     </div>
                                 </button>
@@ -220,15 +178,7 @@ export const WeekView: React.FC = () => {
                             searchTerm && (
                                 <button
                                     onClick={handleManualAdd}
-                                    style={{
-                                        textAlign: 'left',
-                                        padding: 'var(--space-3)',
-                                        backgroundColor: 'var(--primary-light)',
-                                        color: 'var(--primary-dark)',
-                                        border: '1px dashed var(--primary)',
-                                        borderRadius: 'var(--radius-sm)',
-                                        cursor: 'pointer'
-                                    }}
+                                    className="week-view__manual-add-btn"
                                 >
                                     Ajouter "{searchTerm}" comme plat manuel
                                 </button>
@@ -236,7 +186,7 @@ export const WeekView: React.FC = () => {
                         )}
 
                         {filteredRecipes.length === 0 && !searchTerm && (
-                            <p style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 'var(--space-4)' }}>
+                            <p className="week-view__empty-state">
                                 Commencez à taper pour chercher une recette ou ajouter un plat.
                             </p>
                         )}
@@ -257,38 +207,20 @@ interface MealSlotProps {
 }
 
 const MealSlot: React.FC<MealSlotProps> = ({ label, entry, onAdd, onRemove, addText, defaultRecipeText }) => {
-    // ... (Reste inchangé, mais je le réécris pour être sûr)
     return (
-        <div style={{
-            backgroundColor: 'var(--color-slate-50)',
-            padding: 'var(--space-3)',
-            borderRadius: 'var(--radius-sm)',
-            border: '1px dashed var(--color-slate-300)'
-        }}>
-            <div style={{
-                fontSize: 'var(--text-xs)',
-                color: 'var(--text-muted)',
-                marginBottom: 'var(--space-1)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em'
-            }}>
+        <div className="meal-slot">
+            <div className="meal-slot__label">
                 {label}
             </div>
 
             {entry ? (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontWeight: 'var(--font-weight-medium)' }}>
+                <div className="meal-slot__content">
+                    <span className="meal-slot__text">
                         {entry.customLabel || defaultRecipeText}
                     </span>
                     <button
                         onClick={() => onRemove(entry.id)}
-                        style={{
-                            color: 'var(--color-danger-500)',
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            padding: 'var(--space-1)'
-                        }}
+                        className="meal-slot__remove-btn"
                     >
                         <Trash2 size={16} />
                     </button>
@@ -296,17 +228,7 @@ const MealSlot: React.FC<MealSlotProps> = ({ label, entry, onAdd, onRemove, addT
             ) : (
                 <button
                     onClick={onAdd}
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 'var(--space-1)',
-                        color: 'var(--primary)',
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        fontSize: 'var(--text-sm)',
-                        padding: 0
-                    }}
+                    className="meal-slot__add-btn"
                 >
                     <Plus size={16} />
                     <span>{addText}</span>
